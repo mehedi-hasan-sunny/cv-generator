@@ -7,6 +7,7 @@ import Modal from './components/Modal'
 import Template1 from './components/templates/Template1'
 import Template2 from './components/templates/Template2'
 
+
 Vue.use(VeeValidate);
 
 Vue.component('Modal', Modal);

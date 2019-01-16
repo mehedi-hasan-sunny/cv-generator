@@ -4,7 +4,7 @@ import Dashboard from './views/Dashboard.vue'
 import Projects from './views/Projects.vue'
 import Inputs from './views/Inputs.vue'
 import Templates from './views/Templates.vue'
-//import PersonalInfo from './components/inputs/PersonalInfo'
+import PageNotFound from './views/PageNotFound'
 
 Vue.use(Router)
 
@@ -23,19 +23,22 @@ export default new Router({
       component: Projects
     },
     {
-      path: '/inputs',
-      name: 'inputs',
+      path: '/inputs/:input_section?',
+      name:'inputs',
       component: Inputs,
-      children: [
-        {
-          path: '/inputs/:input_section'
-        },
-      ]
     },
+    // {
+    //   path: '/inputs',
+    //   redirect: '/inputs/:input_section'
+    // },
     {
       path: '/templates',
       name: 'templates',
       component: Templates
     },
+    {
+      path:'*',
+      component: PageNotFound,
+    }
   ]
 })

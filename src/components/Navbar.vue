@@ -38,7 +38,7 @@
                 links:[
                     { icon:'dashboard', title:'Dashboard', route:'/'},
                     { icon:'folder', title:'My Projects', route:'/projects'},
-                    { icon:'folder', title:'Inputs', route:'/inputs'},
+                    { icon:'input', title:'Inputs', route:'/inputs/'},
                     { icon:'layers', title:'Templates', route:'/templates'},
                 ]
             }
