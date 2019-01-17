@@ -24,10 +24,10 @@
         </v-navigation-drawer>
         <div class="left-panel">
             <v-layout justify-center>
-                <v-flex xs12 sm10 md8 lg6 pa-5>
+                <v-flex xs12 sm10 md8 lg6 :class="{'pa-5': $vuetify.breakpoint.mdAndUp, 'pa-3': $vuetify.breakpoint.smAndDown}">
                     <v-card ref="form">
                         <v-card-text>
-                            <Component :is="componentChecker()" :title="searchInSidebarNavigation().title"></Component>
+                            <Component :is="loadComponent" :title="title"></Component>
                         </v-card-text>
                         <v-divider class="mt-5"></v-divider>
                         <v-card-actions>
@@ -52,45 +52,60 @@
 <script>
     import PersonalInfo from "../components/inputs/PersonalInfo";
     import CareerObjective from "../components/inputs/CareerObjective";
+    import Education from "../components/inputs/Education";
 
     export default {
         name: "inputs",
         components: {
             PersonalInfo,
             CareerObjective,
+            Education,
         },
         data(){
             return{
                 loadComponent: this.$route.params.input_section,
                 sidebarNavigations: [
-                    { title:'Personal Information', icon: 'account_box', component:'PersonalInfo'},
+                    { title:'Personal Details', icon: 'perm_identity', component:'PersonalInfo'},
                     { title:'Career Objective', icon: 'directions_run', component:'CareerObjective'},
+                    { title:'Education', icon: 'school', component:'Education'},
                 ],
                 items: [
                     { title: 'Home', icon: 'dashboard' },
                     { title: 'About', icon: 'question_answer' }
                 ],
-                right: null
+                right: null,
+                title: null,
             }
         },
-        mounted(){
-          if(!this.loadComponent)
-          {
-              this.loadComponent = this.$router.push({
-                  name:'inputs',
-                  params:{input_section:'PersonalInfo'}
-              });
-          }
-          else if(!this.componentChecker() )
-          {
-              this.loadComponent = this.$router.push({
-                 path:'/error'
-              });
-          }
+        beforeMount(){
+            this.inputRouteCheck();
         },
+
         methods:{
-            updateInputSection(){
-                this.loadComponent = this.$route.params.input_section;
+
+            inputRouteCheck(){
+                if(!this.loadComponent)
+                {
+                    this.$router.push({
+                        name:'inputs',
+                        params:{input_section:'PersonalInfo'}
+                    });
+                    this.loadComponent = this.$route.params.input_section;
+
+                }
+                else if(!this.componentChecker() )
+                {
+                    this.loadComponent=null;
+                    this.$router.push({
+                        path:'/error'
+                    });
+                }
+                else{
+                    if(!this.title){
+                        console.log('from mounted')
+                        this.title = this.searchInSidebarNavigation().title;
+                    }
+                }
             },
             searchInSidebarNavigation(){
                 let instance = this;
@@ -125,15 +140,25 @@
                                navigateComponent = { name:'inputs',params:{ input_section: array[index-1].component}}
                            }
                        }
-
-
                    }
                 });
                 return navigateComponent;
-            }
+            },
+            updateInputSection(){
+                this.loadComponent = this.$route.params.input_section;
+
+                if(!this.loadComponent)
+                {
+                    this.inputRouteCheck();
+                }
+                else
+                {
+                    this.title = this.searchInSidebarNavigation().title;
+                }
+            },
         },
         watch:{
-            $route: 'updateInputSection'
+            $route: 'updateInputSection',
         }
     }
 </script>

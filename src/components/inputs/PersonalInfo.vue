@@ -26,7 +26,7 @@
         </v-flex>
         <v-flex xs12 px-2>
             <img :src="image.url" height="150" v-if="image.url"/>
-            <v-text-field label="Choose Image" @click='imageSelect' v-model='image.name' prepend-icon='attach_file'></v-text-field>
+            <v-text-field label="Choose Image" @click='imageSelect' v-model='image.name' prepend-icon='portrait'></v-text-field>
             <input
                     type="file"
                     style="display: none"

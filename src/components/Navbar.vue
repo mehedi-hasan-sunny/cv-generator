@@ -14,7 +14,7 @@
      </v-toolbar>
      <v-navigation-drawer  v-model="sideBar" app class="primary">
         <v-list>
-             <v-list-tile v-for="link in links" :key="link.title" router :to="link.route">
+             <v-list-tile v-for="link in links" :key="link.title" router :to="link.route" @click="sideBar = !sideBar">
                 <v-list-tile-action>
                     <v-icon class="white--text">{{link.icon}}</v-icon>
                 </v-list-tile-action>
