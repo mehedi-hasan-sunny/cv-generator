@@ -59,7 +59,16 @@
                 address: null,
             }
         },
+        mounted(){
+            this.disableNextRoute();
+        },
+        watch:{
+          'address': 'disableNextRoute'
+        },
         methods:{
+            disableNextRoute(value=true){
+                this.$emit('disableNextRoute',value);
+            },
             imageSelect(){
                 this.$refs.image.click ();
             },

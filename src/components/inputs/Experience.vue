@@ -3,20 +3,17 @@
         <v-flex xs12 my-4>
             <h2 class="text-xs-center">{{title}}</h2>
         </v-flex>
-        <v-layout row wrap v-for="(academicResult,index) in academicResults" :key="index">
+        <v-layout row wrap v-for="(experience,index) in experiences" :key="index">
             <v-flex xs12 px-2>
-                <v-text-field v-model="academicResult.instituteName" label="Institute Name" required></v-text-field>
+                <v-text-field v-model="experience.instituteName" label="Institute Name" required></v-text-field>
             </v-flex>
-            <v-flex xs12 md8 px-2>
-                <v-text-field v-model="academicResult.curriculumName" label="Curriculum / Course Name" required></v-text-field>
-            </v-flex>
-            <v-flex xs12 md4 px-2>
-                <v-text-field v-model="academicResult.gpa" label="GPA / CGPA" required></v-text-field>
+            <v-flex xs12 px-2>
+                <v-text-field v-model="experience.position" label="Designation / Position" required></v-text-field>
             </v-flex>
             <v-flex xs12 md6 px-2>
                 <v-menu
                         :close-on-content-click="false"
-                        v-model="academicResult.startDateMenu"
+                        v-model="experience.startDateMenu"
                         :nudge-right="40"
                         lazy
                         transition="scale-transition"
@@ -26,59 +23,58 @@
                 >
                     <v-text-field
                             slot="activator"
-                            v-model="academicResult.startDate"
+                            v-model="experience.startDate"
                             label="Start Date"
                             prepend-icon="event"
                             readonly
                     ></v-text-field>
-                    <v-date-picker v-model="academicResult.startDate" @input="academicResult.startDateMenu = false"></v-date-picker>
+                    <v-date-picker v-model="experience.startDate" @input="experience.startDateMenu = false"></v-date-picker>
                 </v-menu>
             </v-flex>
             <v-flex xs12 md6 px-2>
                 <v-menu
                         :close-on-content-click="false"
-                        v-model="academicResult.endDateMenu"
+                        v-model="experience.endDateMenu"
                         :nudge-right="40"
                         lazy
                         transition="scale-transition"
                         offset-y
                         full-width
                         min-width="290px"
-                        :disabled="presentChecker(academicResult)"
+                        :disabled="presentChecker(experience)"
                 >
                     <v-text-field
                             slot="activator"
-                            v-model="academicResult.endDate"
+                            v-model="experience.endDate"
                             label="End Date"
                             prepend-icon="event"
                             readonly
                     ></v-text-field>
-                    <v-date-picker v-model="academicResult.endDate" @input="academicResult.endDateMenu = false"></v-date-picker>
+                    <v-date-picker v-model="experience.endDate" @input="experience.endDateMenu = false"></v-date-picker>
                 </v-menu>
                 <v-checkbox
-                        label="Present"
-                        v-model="academicResult.present"
+                        label="Currently Working"
+                        v-model="experience.present"
                         class="ma-0 pa-0"
                 ></v-checkbox>
             </v-flex>
         </v-layout>
         <v-flex xs-12>
-            <v-btn @click="addNewAcademicResult">Add</v-btn>
+            <v-btn @click="addNewExperience">Add</v-btn>
         </v-flex>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Education",
+        name: "Experience",
         props:['title'],
         data(){
             return{
-                academicResults:[
+                experiences:[
                     {
                         instituteName: null,
-                        curriculumName: null,
-                        gpa:null,
+                        position: null,
                         startDate: null,
                         endDate: null,
                         present: false,
@@ -93,10 +89,9 @@
             this.disableNextRoute();
         },
         watch:{
-
-            academicResults: {
+            experiences: {
                 handler() {
-                   this.disableNextRoute(false)
+                    this.disableNextRoute(false)
                 },
                 deep: true
             }
@@ -104,9 +99,7 @@
         methods:{
             disableNextRoute(value=true){
                 this.$emit('disableNextRoute',value);
-               // console.log('adress has value')
             },
-
             presentChecker(value){
                 if(value.present)
                 {
@@ -114,11 +107,10 @@
                 }
                 return value.present;
             },
-            addNewAcademicResult(){
-                this.academicResults.push({
+            addNewExperience(){
+                this.experiences.push({
                     instituteName: null,
-                    curriculumName: null,
-                    gpa:null,
+                    position: null,
                     startDate: null,
                     endDate: null,
                     present: false,

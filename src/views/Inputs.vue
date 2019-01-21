@@ -27,7 +27,9 @@
                 <v-flex xs12 sm10 md8 lg6 :class="{'pa-5': $vuetify.breakpoint.mdAndUp, 'pa-3': $vuetify.breakpoint.smAndDown}">
                     <v-card ref="form">
                         <v-card-text>
-                            <Component :is="loadComponent" :title="title"></Component>
+                            <keep-alive>
+                                <Component :is="loadComponent" :title="title" @disableNextRoute="disableNextRoute"></Component>
+                            </keep-alive>
                         </v-card-text>
                         <v-divider class="mt-5"></v-divider>
                         <v-card-actions>
@@ -37,7 +39,7 @@
                                 </v-btn>
                             </v-flex>
                             <v-flex text-xs-right>
-                                <v-btn color="primary" flat route :to="navigateToComponent('next')">
+                                <v-btn color="primary" flat route :to="navigateToComponent('next')" :disabled="disableNextRouteButton">
                                     Next <v-icon right>navigate_next</v-icon>
                                 </v-btn>
                             </v-flex>
@@ -53,6 +55,8 @@
     import PersonalInfo from "../components/inputs/PersonalInfo";
     import CareerObjective from "../components/inputs/CareerObjective";
     import Education from "../components/inputs/Education";
+    import Experience from "../components/inputs/Experience";
+    import Skills from "../components/inputs/Skills";
 
     export default {
         name: "inputs",
@@ -60,6 +64,8 @@
             PersonalInfo,
             CareerObjective,
             Education,
+            Experience,
+            Skills
         },
         data(){
             return{
@@ -68,6 +74,8 @@
                     { title:'Personal Details', icon: 'perm_identity', component:'PersonalInfo'},
                     { title:'Career Objective', icon: 'directions_run', component:'CareerObjective'},
                     { title:'Education', icon: 'school', component:'Education'},
+                    { title:'Experience', icon: 'work', component:'Experience'},
+                    { title:'Skills', icon: 'build', component:'Skills'},
                 ],
                 items: [
                     { title: 'Home', icon: 'dashboard' },
@@ -75,13 +83,22 @@
                 ],
                 right: null,
                 title: null,
+                disableNextRouteButton: true,
             }
         },
         beforeMount(){
             this.inputRouteCheck();
         },
+        mounted(){
+            this.$cookie.set('test', 'Hello world!', 1);
+        },
 
         methods:{
+
+            disableNextRoute(value){
+                this.disableNextRouteButton = value;
+                console.log('disable value',value)
+            },
 
             inputRouteCheck(){
                 if(!this.loadComponent)
@@ -102,7 +119,6 @@
                 }
                 else{
                     if(!this.title){
-                        console.log('from mounted')
                         this.title = this.searchInSidebarNavigation().title;
                     }
                 }

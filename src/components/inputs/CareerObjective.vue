@@ -36,6 +36,22 @@
             }
 
         },
+        mounted(){
+            this.disableNextRoute();
+        },
+        watch:{
+            'objective': 'disableNextRoute'
+        },
+        methods: {
+            disableNextRoute() {
+                if (!this.objective) {
+                    this.$emit('disableNextRoute', true);
+                } else {
+                    this.$emit('disableNextRoute', false);
+                }
+                console.log('adress has value')
+            },
+        }
     }
 </script>
 
